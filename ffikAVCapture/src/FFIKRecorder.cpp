@@ -38,15 +38,20 @@ void FFIKRecorder::Init()
 	width = 0;
 	height = 0;
 
+#ifdef RECORD_SOUND
 	irrSoundEngine = NULL;
 	irrAudioRecorder = NULL;
 
 	isAudioRecordOptionsSet = false;
 	isAudioRecordActive = false;
 	audioBitRate = 44100;
+#endif
 
 	memset(videoFileName, 0, MAX_NAME_LEN);
+
+#ifdef RECORD_SOUND
 	memset(audioFileName, 0, MAX_NAME_LEN);
+#endif
 }
 
 void FFIKRecorder::Shutdown()
@@ -56,10 +61,12 @@ void FFIKRecorder::Shutdown()
 		StopRecordingVideo();
 	}
 
+#ifdef RECORD_SOUND
 	if (isAudioRecordActive)
 	{
 		StopRecordingAudio();
 	}
+#endif
 
 	if (fpLog != NULL)
 	{
@@ -130,8 +137,12 @@ void FFIKRecorder::SetVideoRecordOptions(const char* fn, int fps, int x, int y, 
 	}
 
 	// check x,y,cx,cy
-	int cx = GetSystemMetrics(SM_CXSCREEN);
-	int cy = GetSystemMetrics(SM_CYSCREEN);
+	//int cx = GetSystemMetrics(SM_CXSCREEN);
+	//int cy = GetSystemMetrics(SM_CYSCREEN);
+
+	int cx = 2998;
+	int cy = 2000;
+
 	cx = (cx >> 2) << 2; // (cx/4)*4 --> cx = 4*n
 
 	if (x<0 || x>cx - 50)
@@ -340,6 +351,8 @@ void FFIKRecorder::StopRecordingVideo()
 	WriteLog(fpLog, "Stop recording video");
 }
 
+#ifdef RECORD_SOUND
+
 void FFIKRecorder::SetAudioRecordOptions(const char* fn,int abr)
 {
 	if (isAudioRecordOptionsSet)
@@ -455,3 +468,4 @@ void FFIKRecorder::SaveAudioAsWaveFile()
 	fclose(fpAudio);
 }
 
+#endif

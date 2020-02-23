@@ -9,9 +9,13 @@ extern "C" {
 #include <libswscale\swscale.h>
 };
 
+#ifdef RECORD_SOUND
+
 #include <irrKlang.h>
 
 using namespace irrklang;
+
+#endif
 
 #pragma comment(lib,"avdevice.lib")
 #pragma comment(lib,"avformat.lib")
@@ -19,7 +23,11 @@ using namespace irrklang;
 #pragma comment(lib,"avutil.lib")
 #pragma comment(lib,"swscale.lib")
 
+#ifdef RECORD_SOUND
+
 #pragma comment(lib,"irrKlang.lib")
+
+#endif
 
 const int MAX_NAME_LEN = 1024;
 
@@ -36,14 +44,20 @@ public:
 	void StopRecordingVideo();
 	int FramesRecorded() { return nFramesRecorded; } // how many frames have been recorded
 
+#ifdef RECORD_SOUND
 	void SetAudioRecordOptions(const char* fn = "", int abr = 44100);
 	void StartRecordingAudio();
 	void StopRecordingAudio();
+#endif
 
 private:
 	void Init();
 	void Shutdown();
+
+#ifdef RECORD_SOUND
 	void SaveAudioAsWaveFile();
+#endif
+
 	void GetDateTime(char str[], const char* prefix = "", const char* suffix = "");
 	void GetDateTimeSpec(char sDateTime[]);
 	void WriteLog(FILE* fp, const char* msg = "");
@@ -71,14 +85,19 @@ private:
 	int width;
 	int height;
 
+#ifdef RECORD_SOUND
 	ISoundEngine* irrSoundEngine;
 	IAudioRecorder* irrAudioRecorder;
 	bool isAudioRecordOptionsSet;
 	bool isAudioRecordActive;
 	int audioBitRate;
+#endif
 
 	char videoFileName[MAX_NAME_LEN];
+
+#ifdef RECORD_SOUND
 	char audioFileName[MAX_NAME_LEN];
+#endif
 	
 	FILE* fpLog;
 };

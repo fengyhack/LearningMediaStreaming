@@ -1,19 +1,27 @@
 #include "FFIKRecorder.h"
 #include <conio.h>
+#include <stdio.h>
 #include <stdlib.h>
+
+const int X0 = 0;
+const int Y0 = 0;
+const int CX = 3000;
+const int CY = 2000;
 
 void main(void)
 {
 	system("title gdigrab");
 	system("color 0e");
-	system("title FFIKRecorder (Press ANY key to continue)");
+	//system("title FFIKRecorder (Press ANY key to continue)");
+	system("title ffcap (http://fengyh.cn/)");
 
-	char* vFile = "F:\\demo\\gdigrab\\1.mp4";
-	int fps = 10, x0 = 200, y0 = 100, w = 800, h = 500;
+	//char vFile[256] = { 0 };
+
+	int fps = 10, x0 = 0, y0 = 0, w = 2544, h = 1612;
 
 	FFIKRecorder recorder;
 
-	recorder.SetVideoRecordOptions(vFile,fps, x0, y0, w, h); // if not set, defaults will be used
+	recorder.SetVideoRecordOptions("",fps, x0, y0, w, h); // if not set, defaults will be used
 	recorder.StartRecordingVideo(); // start capturing video
 	//recorder.SetAudioRecordOptions(aFile); // if not set, defaults will be used
 	//recorder.StartRecordingAudio(); // start recording audio
@@ -23,8 +31,12 @@ void main(void)
 	{
 		if (kbhit()) break;
 		recorder.GrabVideoFrame();
+		if (n < 1)
+		{
+			system("cls");
+		}
 		printf(".");
-		if (++n % 60 == 0) printf("\n");
+		if (++n % 100 == 0) printf("\n");
 	}
 	
 	//recorder.StopRecordingAudio(); // this will be called automatically
