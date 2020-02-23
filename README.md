@@ -4,7 +4,23 @@ A tour of audio/video/streaming (FFmpeg, RTMP, etc), examples and demos.
 
 
 
-# video streaming #
+[TOC]
+
+## Audio Video Recording ##
+
+
+
+**ffikAVCapture**
+
+
+
+video: ffmpeg
+
+audio: irrKlang
+
+
+
+## Video Streaming ##
 
 **ffStreamPublisher**  --> *NGINX* (*background running*)--> **rtmpStreamReceiver**
 
