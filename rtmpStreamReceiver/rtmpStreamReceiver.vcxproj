@@ -130,7 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="stream_receiver.cpp" />
+    <ClCompile Include="stream_receiver.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="getopt.h" />

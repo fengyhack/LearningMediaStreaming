@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 		strcpy(outFile, argv[1]);
 		strcpy(URL, argv[2]);
 	}
-	else if (argc>1)
+	else if (argc > 1)
 	{
 		strcpy(outFile, argv[1]);
 		strcpy(URL, stream);
@@ -38,13 +38,13 @@ int main(int argc, char** argv)
 
 	WORD version = MAKEWORD(1, 1);
 	WSADATA wsaData;
-	WSAStartup(version, &wsaData);		
+	WSAStartup(version, &wsaData);
 
-	RTMP *rtmp = RTMP_Alloc();
+	RTMP* rtmp = RTMP_Alloc();
 	RTMP_Init(rtmp);
 	//rtmp->Link.timeout=10;	
 
-	if(!RTMP_SetupURL(rtmp,URL))
+	if (!RTMP_SetupURL(rtmp, URL))
 	{
 		printf("RTMP_SetupURL Error\n");
 		RTMP_Free(rtmp);
@@ -52,19 +52,19 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	rtmp->Link.lFlags|=RTMP_LF_LIVE;
-	
+	rtmp->Link.lFlags |= RTMP_LF_LIVE;
+
 	//1hour
-	RTMP_SetBufferMS(rtmp, 3600*1000);		
-	
-	if(!RTMP_Connect(rtmp,NULL))
+	RTMP_SetBufferMS(rtmp, 3600 * 1000);
+
+	if (!RTMP_Connect(rtmp, NULL))
 	{
 		RTMP_Free(rtmp);
 		WSACleanup();
 		return -1;
 	}
 
-	if(!RTMP_ConnectStream(rtmp,0))
+	if (!RTMP_ConnectStream(rtmp, 0))
 	{
 		RTMP_Close(rtmp);
 		RTMP_Free(rtmp);
@@ -74,42 +74,42 @@ int main(int argc, char** argv)
 
 	int n, total = 0;
 
-	char *buffer = (char*)malloc(MAX_BUFF_SIZE);
+	char* buffer = (char*)malloc(MAX_BUFF_SIZE);
 	memset(buffer, 0, MAX_BUFF_SIZE);
 
-	FILE *fp = fopen(outFile, "wb");
+	FILE* fp = fopen(outFile, "wb");
 
 	double mega = 1024.0 * 1024;
 
-	while(1)
+	while (1)
 	{
 		n = RTMP_Read(rtmp, buffer, MAX_BUFF_SIZE);
 
 		if (n < 1) break;
 
-		fwrite(buffer,1,n,fp);
+		fwrite(buffer, 1, n, fp);
 
 		total += n;
 
 		printf("Receive: %6dB, Total: %5.3fMB\n", n, total / mega);
 	}
 
-	if (fp!=NULL)
+	if (fp != NULL)
 	{
 		fclose(fp);
 	}
 
-	if(buffer!=NULL)
+	if (buffer != NULL)
 	{
 		free(buffer);
 	}
 
-	if(rtmp!=NULL)
+	if (rtmp != NULL)
 	{
 		RTMP_Close(rtmp);
 		RTMP_Free(rtmp);
 		WSACleanup();
-	}	
+	}
 
 	system("pause");
 

@@ -38,7 +38,7 @@ typedef struct SwsContext SWSContext;
 
 #define CAP_DEVICE CAP_CAMERA
 
-char* camera = "video=Lenovo EasyCamera"; // camera name
+char* camera = "video=Microsoft Camera Front"/*"video=Lenovo EasyCamera"*/; // camera name
 
 char* output = "rtmp://127.0.0.1/live/stream"; // output: RTMP publish stream
 //char* output = "saved_video.mp4";            // output: saveas video file
@@ -108,10 +108,10 @@ int main(int argc, char** argv)
 	int voutPixfmt = AV_PIX_FMT_YUV420P;
 
 	SWSContext* swsContext = sws_getContext(width, height, vgdiCodecContext->pix_fmt,
-		width, height, voutPixfmt, SWS_BILINEAR, NULL, NULL, NULL);
+		width, height, voutPixfmt, 2/*SWS_BILINEAR*/, NULL, NULL, NULL);
 
 	int buffLen = avpicture_get_size(voutPixfmt, width, height);
-	uint8_t* buffer = (uint8_t *)av_malloc(buffLen);
+	uint8_t* buffer = (uint8_t*)av_malloc(buffLen);
 
 	AVFrame* voutFrame = av_frame_alloc();
 	avpicture_fill((AVPicture*)voutFrame, buffer, voutPixfmt, width, height);
@@ -119,7 +119,7 @@ int main(int argc, char** argv)
 	AVFormatContext* voutFormatContext = NULL;
 	avformat_alloc_output_context2(&voutFormatContext, NULL, "flv", URL);
 
-	avio_open(&(voutFormatContext->pb), URL, AVIO_FLAG_WRITE);
+	avio_open(&(voutFormatContext->pb), URL, 2/*AVIO_FLAG_WRITE*/);
 
 	AVStream* voutStream = avformat_new_stream(voutFormatContext, NULL);
 
@@ -147,7 +147,7 @@ int main(int argc, char** argv)
 		//av_dict_set(&voutOptions, "profile", "main", 0);  
 	}
 	//H.265  
-	if (voutCodecContext->codec_id == AV_CODEC_ID_H265)
+	if (voutCodecContext->codec_id == AV_CODEC_ID_HEVC/*AV_CODEC_ID_H265*/)
 	{
 		av_dict_set(&voutOptions, "preset", "ultrafast", 0);
 		av_dict_set(&voutOptions, "tune", "zero-latency", 0);
@@ -177,7 +177,7 @@ int main(int argc, char** argv)
 		voutFrame->format = voutCodecContext->pix_fmt;
 		voutFrame->width = width;
 		voutFrame->height = height;
-		voutFrame->pts = nFramesRecorded*(voutStream->time_base.den) / ((voutStream->time_base.num) * fps);
+		voutFrame->pts = nFramesRecorded * (voutStream->time_base.den) / ((voutStream->time_base.num) * fps);
 
 		AVPacket* outPacket = av_packet_alloc(); // ALLOC_PACKET_OUT
 		avcodec_encode_video2(voutCodecContext, outPacket, voutFrame, &got);
