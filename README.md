@@ -4,9 +4,8 @@ A tour of audio/video/streaming (FFmpeg, RTMP, etc), examples and demos.
 
 
 
-> NOTE:
+> NOTE: Dependencies should be in the .dep folder (*.props and more)
 >
-> Dependencies are in the .dep folder (*.props and more)
 
 
 
@@ -16,17 +15,14 @@ A tour of audio/video/streaming (FFmpeg, RTMP, etc), examples and demos.
 
 
 
-**ffikAVCapture**
+[**ffikAVCapture**](./ffikAVCapture)
 
+video recording: ffmpeg
 
-
-video: ffmpeg
-
-audio: irrKlang
+audio recording: irrKlang
 
 
 
 ## Video Streaming ##
 
-**ffStreamPublisher**  --> *NGINX* (*background running*)--> **rtmpStreamReceiver**
-
+[**ffStreamPublisher**](./ffStreamPublisher) --> *NGINX* (with rtmp moudle)--> [**rtmpStreamReceiver**](./rtmpStreamReceiver)

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stream_publisher.c">
+    <ClCompile Include="vstream_recorder_publisher.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
