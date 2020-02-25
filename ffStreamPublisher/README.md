@@ -6,7 +6,9 @@ VideoGrab/ScreenCapture & Streaming based on FFmpeg on Windows
 ## 输入方式 ##
 
 1.摄像头
+
 2.屏幕(录屏)
+
 3.*其他（如视频文件输入，未实现）*
 
 
