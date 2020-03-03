@@ -14,7 +14,7 @@ FFIKRecorder::~FFIKRecorder()
 void FFIKRecorder::Init()
 {
 	fpLog = fopen("FFIK.log", "a");
-	WriteLog(fpLog, "FFIK stratup");
+	WriteLog(fpLog, "FFIK startup");
 
 	vgdiOptions = NULL;
 	vgdiFormatContext = NULL;
